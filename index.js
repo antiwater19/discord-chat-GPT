@@ -31,7 +31,7 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith('!')) return;
 
     await message.channel.sendTyping();
-
+//입력한 글자의 수가 2000자가 넘으면 요약해 달라고 응답하는 것이다.
     if (message.content.length > msgLengthLimit) {
       message.reply("Whoa now, I'm not going to read all that. Maybe summarize?");
       return;
@@ -47,7 +47,7 @@ client.on('messageCreate', async (message) => {
       if (msg.content.length > msgLengthLimit) return;
       if (msg.author.id !== client.user.id && message.author.bot) return;
 
-      // If msg is from the bot (client) itself
+      // If msg is from the bot (client) itself(이봇 어드민이 사용할때)
       if (msg.author.id === client.user.id) {
         conversationLog.push({
           role: 'assistant',
@@ -55,7 +55,7 @@ client.on('messageCreate', async (message) => {
         });
       }
 
-      // If msg is from a regular user
+      // If msg is from a regular user(일반 사용자가 사용할때)
       else {
         if (msg.author.id !== message.author.id) return;
 
@@ -74,7 +74,7 @@ client.on('messageCreate', async (message) => {
     let reply = res.data.choices[0].message?.content;
 
     if (reply?.length > 2000) {
-      // If the reply length is over 2000 characters, send a txt file.
+      // 응답 길이가 2000자가 넘으면 txt파일로 올린다. 
       const buffer = Buffer.from(reply, 'utf8');
       const txtFile = new AttachmentBuilder(buffer, { name: `${message.author.tag}_response.txt` });
 
